@@ -10,24 +10,39 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 import javax.script.ScriptException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Objects;
+import java.util.Scanner;
 
 @Controller
 @Log
 public class HtmlController {
-    ClassLoader loader = HtmlController.class.getClassLoader();
-    String indexHtml = Files.readString(Path.of(loader.getSystemResource("reactapp/index.html").toURI()));
-    String mainJs = Files.readString(Path.of(loader.getSystemResource("reactapp/js/main.js").toURI()));
-    String textEncoderPolyfill = Files.readString(Path.of(loader.getSystemResource("TextEncoderPolyfill.js").toURI()));
-    String renderJs = readRenderJs();
-    GraalJSScriptEngine engine = initializeEngine();
-    public HtmlController() throws IOException, ScriptException, URISyntaxException {
+    String indexHtml;
+    String mainJs;
+    String textEncoderPolyfill;
+    String renderJs;
+    GraalJSScriptEngine engine;
+    public HtmlController() throws ScriptException {
+        indexHtml = readFile("reactapp/index.html");
+        mainJs = readFile("reactapp/js/main.js");
+        textEncoderPolyfill = readFile("TextEncoderPolyfill.js");
 
+        renderJs = readRenderJs();
+        engine = initializeEngine();
+    }
+
+    private String readFile(String path){
+        StringBuilder bob = new StringBuilder();
+
+        Scanner s = new Scanner(new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(path))));
+
+       while (s.hasNextLine()){
+           bob.append(s.nextLine());
+           bob.append(System.lineSeparator());
+       }
+       return bob.toString();
     }
 
     @ResponseBody
