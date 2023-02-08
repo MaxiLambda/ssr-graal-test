@@ -53,8 +53,15 @@ public class HtmlController {
         var html =  engine.eval(renderJs);
         return indexHtml
                 .replace("<div id=\"root\"></div>", "<div id=\"root\">%s</div>".formatted(html))
-                .replace("<script defer=\"defer\" type=\"module\">"+readRenderJs()+"</script>","<p>???</p>")
+//                .replace("<script defer=\"defer\" type=\"module\">"+readRenderJs()+"</script>","")
                 ;
+    }
+
+    @ResponseBody
+    @GetMapping({"/old","/s/**"})
+    public String server(HttpServletRequest request) throws ScriptException {
+        engine.eval("window.requestUrl = '" + request.getRequestURI()+"'");
+        return engine.eval(renderJs).toString();
     }
 
     @ResponseBody
