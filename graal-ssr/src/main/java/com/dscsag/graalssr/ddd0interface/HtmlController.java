@@ -7,17 +7,18 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.script.ScriptException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Objects;
 import java.util.Scanner;
 
 @Controller
 @Log
+@CrossOrigin
 public class HtmlController {
     String indexHtml;
     String mainJs;
@@ -52,7 +53,7 @@ public class HtmlController {
         var html =  engine.eval(renderJs);
         return indexHtml
                 .replace("<div id=\"root\"></div>", "<div id=\"root\">%s</div>".formatted(html))
-//                .replace("<script defer=\"defer\" type=\"module\">"+readRenderJs()+"</script>","<p>???</p>")
+                .replace("<script defer=\"defer\" type=\"module\">"+readRenderJs()+"</script>","<p>???</p>")
                 ;
     }
 

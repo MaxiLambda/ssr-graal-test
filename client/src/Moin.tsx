@@ -1,11 +1,13 @@
 import logo from "./logo.svg";
 import React, {useEffect} from "react";
 import {coffee} from "./java";
+import {Link} from "react-router-dom";
+
 export const Moin = () => {
     useEffect(() => console.log("asdasdasdasd"))
 
     return (<>
-        <p>Testlol</p>
+        <Link to={"/r/hello"} >r/hello</Link>
         <p>Hhhhhhhhhhhhhhhhhhhhhhhhhhaaaaa + {coffee}</p>
         <div className="App">
             <header className="App-header">
@@ -23,5 +25,5 @@ export const Moin = () => {
                 </a>
             </header>
         </div>
-    </>);
+        </>);
 };
